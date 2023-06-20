@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5ffe1987e0c348c5b05c156b297a3d5b" Name="Diagram1">
+        <EntityTypeShape EntityType="gestion_incidenciasModel.departamento" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_incidenciasModel.estados" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_incidenciasModel.hardware" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_incidenciasModel.incidencia" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_incidenciasModel.permisos" Width="1.5" PointX="1.5" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_incidenciasModel.profesor" Width="1.5" PointX="6" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_incidenciasModel.roles" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_incidenciasModel.tipo_hardware" Width="1.5" PointX="1.5" PointY="11.75" IsExpanded="true" />
+        <AssociationConnector Association="gestion_incidenciasModel.fk_incidencia_departamento1" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_incidenciasModel.fk_profesor_departamento1" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_incidenciasModel.fk_incidencia_estados1" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_incidenciasModel.fk_hardware_tipo_hardware1" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_incidenciasModel.fk_incidencia_hardware1" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_incidenciasModel.fk_incidencia_profesor1" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_incidenciasModel.fk_incidencia_profesor2" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_incidenciasModel.fk_profesor_roles1" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_incidenciasModel.roles_has_permisos" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

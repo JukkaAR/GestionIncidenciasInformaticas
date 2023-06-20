@@ -1,0 +1,625 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="gestion_incidenciasModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="departamento">
+          <Key>
+            <PropertyRef Name="codigo_dep" />
+          </Key>
+          <Property Name="codigo_dep" Type="int" Nullable="false" />
+          <Property Name="nombre_dep" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="estados">
+          <Key>
+            <PropertyRef Name="codigo_estado" />
+          </Key>
+          <Property Name="codigo_estado" Type="int" Nullable="false" />
+          <Property Name="desc_estado" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="hardware">
+          <Key>
+            <PropertyRef Name="id_incidencia_hw" />
+          </Key>
+          <Property Name="id_incidencia_hw" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="num_serie" Type="int" Nullable="false" />
+          <Property Name="modelo" Type="varchar" MaxLength="45" />
+          <Property Name="tipo_hardware_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="incidencia">
+          <Key>
+            <PropertyRef Name="num_incidencia" />
+          </Key>
+          <Property Name="num_incidencia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipo_incidencia" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="fecha_incidencia" Type="date" Nullable="false" />
+          <Property Name="fecha_introduccion" Type="date" Nullable="false" />
+          <Property Name="aula_ubicacion" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="descripcion_incidencia" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="observaciones" Type="varchar" MaxLength="100" />
+          <Property Name="fecha_resolución" Type="date" />
+          <Property Name="estados_codigo_estado" Type="int" Nullable="false" />
+          <Property Name="departamento_codigo_dep" Type="int" Nullable="false" />
+          <Property Name="profesor_dni" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="tiempo_invertido" Type="double" />
+          <Property Name="info_acompanyada" Type="longblob" />
+          <Property Name="hardware_id_incidencia_hw" Type="int" />
+          <Property Name="dni_responsable" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="permisos">
+          <Key>
+            <PropertyRef Name="cod_permiso" />
+          </Key>
+          <Property Name="cod_permiso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="desc_permiso" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="profesor">
+          <Key>
+            <PropertyRef Name="dni" />
+          </Key>
+          <Property Name="dni" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellidos" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="contraseña" Type="varchar" MaxLength="30" />
+          <Property Name="departamento_codigo_dep" Type="int" Nullable="false" />
+          <Property Name="roles_rol" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="rol" />
+          </Key>
+          <Property Name="rol" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roles_has_permisos">
+          <Key>
+            <PropertyRef Name="roles_rol" />
+            <PropertyRef Name="permisos_cod_permiso" />
+          </Key>
+          <Property Name="roles_rol" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="permisos_cod_permiso" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tipo_hardware">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_hardware_tipo_hardware1">
+          <End Role="tipo_hardware" Type="Self.tipo_hardware" Multiplicity="1" />
+          <End Role="hardware" Type="Self.hardware" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo_hardware">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="hardware">
+              <PropertyRef Name="tipo_hardware_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_departamento1">
+          <End Role="departamento" Type="Self.departamento" Multiplicity="1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="departamento">
+              <PropertyRef Name="codigo_dep" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="departamento_codigo_dep" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_estados1">
+          <End Role="estados" Type="Self.estados" Multiplicity="1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estados">
+              <PropertyRef Name="codigo_estado" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="estados_codigo_estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_hardware1">
+          <End Role="hardware" Type="Self.hardware" Multiplicity="0..1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="hardware">
+              <PropertyRef Name="id_incidencia_hw" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="hardware_id_incidencia_hw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_profesor1">
+          <End Role="profesor" Type="Self.profesor" Multiplicity="1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="profesor">
+              <PropertyRef Name="dni" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="profesor_dni" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_profesor2">
+          <End Role="profesor" Type="Self.profesor" Multiplicity="1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="profesor">
+              <PropertyRef Name="dni" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="dni_responsable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_profesor_departamento1">
+          <End Role="departamento" Type="Self.departamento" Multiplicity="1" />
+          <End Role="profesor" Type="Self.profesor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="departamento">
+              <PropertyRef Name="codigo_dep" />
+            </Principal>
+            <Dependent Role="profesor">
+              <PropertyRef Name="departamento_codigo_dep" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_profesor_roles1">
+          <End Role="roles" Type="Self.roles" Multiplicity="1" />
+          <End Role="profesor" Type="Self.profesor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="rol" />
+            </Principal>
+            <Dependent Role="profesor">
+              <PropertyRef Name="roles_rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_roles_has_permisos_permisos1">
+          <End Role="permisos" Type="Self.permisos" Multiplicity="1" />
+          <End Role="roles_has_permisos" Type="Self.roles_has_permisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="permisos">
+              <PropertyRef Name="cod_permiso" />
+            </Principal>
+            <Dependent Role="roles_has_permisos">
+              <PropertyRef Name="permisos_cod_permiso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_roles_has_permisos_roles1">
+          <End Role="roles" Type="Self.roles" Multiplicity="1" />
+          <End Role="roles_has_permisos" Type="Self.roles_has_permisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="rol" />
+            </Principal>
+            <Dependent Role="roles_has_permisos">
+              <PropertyRef Name="roles_rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="gestion_incidenciasModelStoreContainer">
+          <EntitySet Name="departamento" EntityType="Self.departamento" Schema="gestion_incidencias" store:Type="Tables" />
+          <EntitySet Name="estados" EntityType="Self.estados" Schema="gestion_incidencias" store:Type="Tables" />
+          <EntitySet Name="hardware" EntityType="Self.hardware" Schema="gestion_incidencias" store:Type="Tables" />
+          <EntitySet Name="incidencia" EntityType="Self.incidencia" Schema="gestion_incidencias" store:Type="Tables" />
+          <EntitySet Name="permisos" EntityType="Self.permisos" Schema="gestion_incidencias" store:Type="Tables" />
+          <EntitySet Name="profesor" EntityType="Self.profesor" Schema="gestion_incidencias" store:Type="Tables" />
+          <EntitySet Name="roles" EntityType="Self.roles" Schema="gestion_incidencias" store:Type="Tables" />
+          <EntitySet Name="roles_has_permisos" EntityType="Self.roles_has_permisos" Schema="gestion_incidencias" store:Type="Tables" />
+          <EntitySet Name="tipo_hardware" EntityType="Self.tipo_hardware" Schema="gestion_incidencias" store:Type="Tables" />
+          <AssociationSet Name="fk_hardware_tipo_hardware1" Association="Self.fk_hardware_tipo_hardware1">
+            <End Role="tipo_hardware" EntitySet="tipo_hardware" />
+            <End Role="hardware" EntitySet="hardware" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_departamento1" Association="Self.fk_incidencia_departamento1">
+            <End Role="departamento" EntitySet="departamento" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_estados1" Association="Self.fk_incidencia_estados1">
+            <End Role="estados" EntitySet="estados" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_hardware1" Association="Self.fk_incidencia_hardware1">
+            <End Role="hardware" EntitySet="hardware" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_profesor1" Association="Self.fk_incidencia_profesor1">
+            <End Role="profesor" EntitySet="profesor" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_profesor2" Association="Self.fk_incidencia_profesor2">
+            <End Role="profesor" EntitySet="profesor" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_profesor_departamento1" Association="Self.fk_profesor_departamento1">
+            <End Role="departamento" EntitySet="departamento" />
+            <End Role="profesor" EntitySet="profesor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_profesor_roles1" Association="Self.fk_profesor_roles1">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="profesor" EntitySet="profesor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_roles_has_permisos_permisos1" Association="Self.fk_roles_has_permisos_permisos1">
+            <End Role="permisos" EntitySet="permisos" />
+            <End Role="roles_has_permisos" EntitySet="roles_has_permisos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_roles_has_permisos_roles1" Association="Self.fk_roles_has_permisos_roles1">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="roles_has_permisos" EntitySet="roles_has_permisos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="gestion_incidenciasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="departamento">
+          <Key>
+            <PropertyRef Name="codigo_dep" />
+          </Key>
+          <Property Name="codigo_dep" Type="Int32" Nullable="false" />
+          <Property Name="nombre_dep" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="incidencia" Relationship="Self.fk_incidencia_departamento1" FromRole="departamento" ToRole="incidencia" />
+          <NavigationProperty Name="profesor" Relationship="Self.fk_profesor_departamento1" FromRole="departamento" ToRole="profesor" />
+        </EntityType>
+        <EntityType Name="estados">
+          <Key>
+            <PropertyRef Name="codigo_estado" />
+          </Key>
+          <Property Name="codigo_estado" Type="Int32" Nullable="false" />
+          <Property Name="desc_estado" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="incidencia" Relationship="Self.fk_incidencia_estados1" FromRole="estados" ToRole="incidencia" />
+        </EntityType>
+        <EntityType Name="hardware">
+          <Key>
+            <PropertyRef Name="id_incidencia_hw" />
+          </Key>
+          <Property Name="id_incidencia_hw" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="num_serie" Type="Int32" Nullable="false" />
+          <Property Name="modelo" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="tipo_hardware_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tipo_hardware" Relationship="Self.fk_hardware_tipo_hardware1" FromRole="hardware" ToRole="tipo_hardware" />
+          <NavigationProperty Name="incidencia" Relationship="Self.fk_incidencia_hardware1" FromRole="hardware" ToRole="incidencia" />
+        </EntityType>
+        <EntityType Name="incidencia">
+          <Key>
+            <PropertyRef Name="num_incidencia" />
+          </Key>
+          <Property Name="num_incidencia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipo_incidencia" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fecha_incidencia" Type="DateTime" Nullable="false" />
+          <Property Name="fecha_introduccion" Type="DateTime" Nullable="false" />
+          <Property Name="aula_ubicacion" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion_incidencia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="observaciones" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_resolución" Type="DateTime" />
+          <Property Name="estados_codigo_estado" Type="Int32" Nullable="false" />
+          <Property Name="departamento_codigo_dep" Type="Int32" Nullable="false" />
+          <Property Name="profesor_dni" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tiempo_invertido" Type="Double" />
+          <Property Name="info_acompanyada" Type="Binary" MaxLength="Max" />
+          <Property Name="hardware_id_incidencia_hw" Type="Int32" />
+          <Property Name="dni_responsable" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="departamento" Relationship="Self.fk_incidencia_departamento1" FromRole="incidencia" ToRole="departamento" />
+          <NavigationProperty Name="estados" Relationship="Self.fk_incidencia_estados1" FromRole="incidencia" ToRole="estados" />
+          <NavigationProperty Name="hardware" Relationship="Self.fk_incidencia_hardware1" FromRole="incidencia" ToRole="hardware" />
+          <NavigationProperty Name="profesor" Relationship="Self.fk_incidencia_profesor1" FromRole="incidencia" ToRole="profesor" />
+          <NavigationProperty Name="profesor1" Relationship="Self.fk_incidencia_profesor2" FromRole="incidencia" ToRole="profesor" />
+        </EntityType>
+        <EntityType Name="permisos">
+          <Key>
+            <PropertyRef Name="cod_permiso" />
+          </Key>
+          <Property Name="cod_permiso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="desc_permiso" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="roles" Relationship="Self.roles_has_permisos" FromRole="permisos" ToRole="roles" />
+        </EntityType>
+        <EntityType Name="profesor">
+          <Key>
+            <PropertyRef Name="dni" />
+          </Key>
+          <Property Name="dni" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contraseña" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="departamento_codigo_dep" Type="Int32" Nullable="false" />
+          <Property Name="roles_rol" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="departamento" Relationship="Self.fk_profesor_departamento1" FromRole="profesor" ToRole="departamento" />
+          <NavigationProperty Name="incidencia" Relationship="Self.fk_incidencia_profesor1" FromRole="profesor" ToRole="incidencia" />
+          <NavigationProperty Name="incidencia1" Relationship="Self.fk_incidencia_profesor2" FromRole="profesor" ToRole="incidencia" />
+          <NavigationProperty Name="roles" Relationship="Self.fk_profesor_roles1" FromRole="profesor" ToRole="roles" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="rol" />
+          </Key>
+          <Property Name="rol" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="profesor" Relationship="Self.fk_profesor_roles1" FromRole="roles" ToRole="profesor" />
+          <NavigationProperty Name="permisos" Relationship="Self.roles_has_permisos" FromRole="roles" ToRole="permisos" />
+        </EntityType>
+        <EntityType Name="tipo_hardware">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="hardware" Relationship="Self.fk_hardware_tipo_hardware1" FromRole="tipo_hardware" ToRole="hardware" />
+        </EntityType>
+        <Association Name="fk_incidencia_departamento1">
+          <End Role="departamento" Type="Self.departamento" Multiplicity="1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="departamento">
+              <PropertyRef Name="codigo_dep" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="departamento_codigo_dep" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_profesor_departamento1">
+          <End Role="departamento" Type="Self.departamento" Multiplicity="1" />
+          <End Role="profesor" Type="Self.profesor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="departamento">
+              <PropertyRef Name="codigo_dep" />
+            </Principal>
+            <Dependent Role="profesor">
+              <PropertyRef Name="departamento_codigo_dep" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_estados1">
+          <End Role="estados" Type="Self.estados" Multiplicity="1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estados">
+              <PropertyRef Name="codigo_estado" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="estados_codigo_estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_hardware_tipo_hardware1">
+          <End Role="tipo_hardware" Type="Self.tipo_hardware" Multiplicity="1" />
+          <End Role="hardware" Type="Self.hardware" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo_hardware">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="hardware">
+              <PropertyRef Name="tipo_hardware_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_hardware1">
+          <End Role="hardware" Type="Self.hardware" Multiplicity="0..1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="hardware">
+              <PropertyRef Name="id_incidencia_hw" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="hardware_id_incidencia_hw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_profesor1">
+          <End Role="profesor" Type="Self.profesor" Multiplicity="1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="profesor">
+              <PropertyRef Name="dni" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="profesor_dni" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_incidencia_profesor2">
+          <End Role="profesor" Type="Self.profesor" Multiplicity="1" />
+          <End Role="incidencia" Type="Self.incidencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="profesor">
+              <PropertyRef Name="dni" />
+            </Principal>
+            <Dependent Role="incidencia">
+              <PropertyRef Name="dni_responsable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_profesor_roles1">
+          <End Role="roles" Type="Self.roles" Multiplicity="1" />
+          <End Role="profesor" Type="Self.profesor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="rol" />
+            </Principal>
+            <Dependent Role="profesor">
+              <PropertyRef Name="roles_rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="roles_has_permisos">
+          <End Role="permisos" Type="Self.permisos" Multiplicity="*" />
+          <End Role="roles" Type="Self.roles" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="gestion_incidenciasEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="departamento" EntityType="Self.departamento" />
+          <EntitySet Name="estados" EntityType="Self.estados" />
+          <EntitySet Name="hardware" EntityType="Self.hardware" />
+          <EntitySet Name="incidencia" EntityType="Self.incidencia" />
+          <EntitySet Name="permisos" EntityType="Self.permisos" />
+          <EntitySet Name="profesor" EntityType="Self.profesor" />
+          <EntitySet Name="roles" EntityType="Self.roles" />
+          <EntitySet Name="tipo_hardware" EntityType="Self.tipo_hardware" />
+          <AssociationSet Name="fk_incidencia_departamento1" Association="Self.fk_incidencia_departamento1">
+            <End Role="departamento" EntitySet="departamento" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_profesor_departamento1" Association="Self.fk_profesor_departamento1">
+            <End Role="departamento" EntitySet="departamento" />
+            <End Role="profesor" EntitySet="profesor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_estados1" Association="Self.fk_incidencia_estados1">
+            <End Role="estados" EntitySet="estados" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_hardware_tipo_hardware1" Association="Self.fk_hardware_tipo_hardware1">
+            <End Role="tipo_hardware" EntitySet="tipo_hardware" />
+            <End Role="hardware" EntitySet="hardware" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_hardware1" Association="Self.fk_incidencia_hardware1">
+            <End Role="hardware" EntitySet="hardware" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_profesor1" Association="Self.fk_incidencia_profesor1">
+            <End Role="profesor" EntitySet="profesor" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_incidencia_profesor2" Association="Self.fk_incidencia_profesor2">
+            <End Role="profesor" EntitySet="profesor" />
+            <End Role="incidencia" EntitySet="incidencia" />
+          </AssociationSet>
+          <AssociationSet Name="fk_profesor_roles1" Association="Self.fk_profesor_roles1">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="profesor" EntitySet="profesor" />
+          </AssociationSet>
+          <AssociationSet Name="roles_has_permisos" Association="Self.roles_has_permisos">
+            <End Role="permisos" EntitySet="permisos" />
+            <End Role="roles" EntitySet="roles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="gestion_incidenciasModelStoreContainer" CdmEntityContainer="gestion_incidenciasEntities">
+          <EntitySetMapping Name="departamento">
+            <EntityTypeMapping TypeName="gestion_incidenciasModel.departamento">
+              <MappingFragment StoreEntitySet="departamento">
+                <ScalarProperty Name="codigo_dep" ColumnName="codigo_dep" />
+                <ScalarProperty Name="nombre_dep" ColumnName="nombre_dep" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="estados">
+            <EntityTypeMapping TypeName="gestion_incidenciasModel.estados">
+              <MappingFragment StoreEntitySet="estados">
+                <ScalarProperty Name="codigo_estado" ColumnName="codigo_estado" />
+                <ScalarProperty Name="desc_estado" ColumnName="desc_estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hardware">
+            <EntityTypeMapping TypeName="gestion_incidenciasModel.hardware">
+              <MappingFragment StoreEntitySet="hardware">
+                <ScalarProperty Name="id_incidencia_hw" ColumnName="id_incidencia_hw" />
+                <ScalarProperty Name="num_serie" ColumnName="num_serie" />
+                <ScalarProperty Name="modelo" ColumnName="modelo" />
+                <ScalarProperty Name="tipo_hardware_id" ColumnName="tipo_hardware_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="incidencia">
+            <EntityTypeMapping TypeName="gestion_incidenciasModel.incidencia">
+              <MappingFragment StoreEntitySet="incidencia">
+                <ScalarProperty Name="num_incidencia" ColumnName="num_incidencia" />
+                <ScalarProperty Name="tipo_incidencia" ColumnName="tipo_incidencia" />
+                <ScalarProperty Name="fecha_incidencia" ColumnName="fecha_incidencia" />
+                <ScalarProperty Name="fecha_introduccion" ColumnName="fecha_introduccion" />
+                <ScalarProperty Name="aula_ubicacion" ColumnName="aula_ubicacion" />
+                <ScalarProperty Name="descripcion_incidencia" ColumnName="descripcion_incidencia" />
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+                <ScalarProperty Name="fecha_resolución" ColumnName="fecha_resolución" />
+                <ScalarProperty Name="estados_codigo_estado" ColumnName="estados_codigo_estado" />
+                <ScalarProperty Name="departamento_codigo_dep" ColumnName="departamento_codigo_dep" />
+                <ScalarProperty Name="profesor_dni" ColumnName="profesor_dni" />
+                <ScalarProperty Name="tiempo_invertido" ColumnName="tiempo_invertido" />
+                <ScalarProperty Name="info_acompanyada" ColumnName="info_acompanyada" />
+                <ScalarProperty Name="hardware_id_incidencia_hw" ColumnName="hardware_id_incidencia_hw" />
+                <ScalarProperty Name="dni_responsable" ColumnName="dni_responsable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="permisos">
+            <EntityTypeMapping TypeName="gestion_incidenciasModel.permisos">
+              <MappingFragment StoreEntitySet="permisos">
+                <ScalarProperty Name="cod_permiso" ColumnName="cod_permiso" />
+                <ScalarProperty Name="desc_permiso" ColumnName="desc_permiso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="profesor">
+            <EntityTypeMapping TypeName="gestion_incidenciasModel.profesor">
+              <MappingFragment StoreEntitySet="profesor">
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="contraseña" ColumnName="contraseña" />
+                <ScalarProperty Name="departamento_codigo_dep" ColumnName="departamento_codigo_dep" />
+                <ScalarProperty Name="roles_rol" ColumnName="roles_rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="gestion_incidenciasModel.roles">
+              <MappingFragment StoreEntitySet="roles">
+                <ScalarProperty Name="rol" ColumnName="rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipo_hardware">
+            <EntityTypeMapping TypeName="gestion_incidenciasModel.tipo_hardware">
+              <MappingFragment StoreEntitySet="tipo_hardware">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="roles_has_permisos" TypeName="gestion_incidenciasModel.roles_has_permisos" StoreEntitySet="roles_has_permisos">
+            <EndProperty Name="permisos">
+              <ScalarProperty Name="cod_permiso" ColumnName="permisos_cod_permiso" />
+            </EndProperty>
+            <EndProperty Name="roles">
+              <ScalarProperty Name="rol" ColumnName="roles_rol" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,172 @@
+﻿<mah:MetroWindow x:Class="GestionIncidenciasInformaticas.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GestionIncidenciasInformaticas"
+        mc:Ignorable="d"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Icon="/Recursos/Iconos/Motherboard.png"
+        Title="Gestión de incidencias" Height="700" Width="1310"
+        >
+    <mah:MetroWindow.RightWindowCommands>
+        <!--Menú al lado de los botones de la TaskBar-->
+        <mah:WindowCommands>
+            <Grid>
+                <mat:PopupBox PlacementMode="BottomAndAlignRightEdges" 
+                                         HorizontalAlignment="Right"
+                                         StaysOpen="False">
+                    <StackPanel Width="160">
+                        <Button Height="30" x:Name="Desconectar" Click="Desconectar_Click">
+                            <Grid Width="120">
+                                <TextBlock Text="Desconectar" HorizontalAlignment="Left"/>
+                                <mat:PackIcon Kind="PowerPlugOff" Margin="0, 0, 0, 10"
+                                              HorizontalAlignment="Right" />
+                            </Grid>
+                        </Button>
+
+                    </StackPanel>
+                </mat:PopupBox>
+            </Grid>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+    <DockPanel>
+
+        <!--ACORDION-->
+        <Grid DockPanel.Dock="Left" Width="250">
+            <!--Degradado,Columnas y Filas-->
+            <Grid.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#333333"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <!--Menú principal-->
+            <StackPanel x:Name="MenuPrincipal" Margin="10">
+                <StackPanel Orientation="Horizontal">
+                    <mat:PackIcon Kind="ViewDashboard" Width="15" Height="15" 
+                                  Margin="10, 16, 20, 16" Foreground="White" />
+                    <TextBlock Text="Gestión de incidencias" VerticalAlignment="Center"
+                               FontSize="17" Foreground="White" x:Name="txtBlockGestionIncidencias"/>
+                </StackPanel>
+                <Separator></Separator>
+
+                <Grid>
+                    <!-- Panel Incidencias -->
+                    <mat:PackIcon Kind="SmsFailed" Width="15" Height="15" 
+                                  Margin="10 16" Foreground="White" />
+                    <Expander IsExpanded="False" Width="210" Header="Incidencias" 
+                              HorizontalAlignment="Right" Style="{StaticResource MaterialDesignExpander}"
+                              Background="{x:Null}" Foreground="White" >
+                        <ListView ItemsSource="{Binding Path=SubItems}"
+                                  Foreground="White" Style="{StaticResource MaterialDesignListView}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListViewItem Content="Añadir" Padding="20,5" 
+                                          MouseLeftButtonUp="BtnAñadirIncidencia_MouseLeftButtonUp"
+                                          x:Name="BtnAñadirIncidencia" IsEnabled="False"/>
+                            <ListViewItem Content="Ver lista(Modificar/Borrar)" x:Name="btnListaIncidencia"
+                                          Padding="20,5" MouseLeftButtonUp="btnListaIncidencia_MouseLeftButtonUp"
+                                          />
+                        </ListView>
+                    </Expander>
+                </Grid>
+                <Grid>
+                    <!-- Panel Hardware -->
+                    <mat:PackIcon Kind="Computer" Width="15" Height="15" 
+                                  Margin="10 16" Foreground="White" />
+                    <Expander IsExpanded="False" Width="210" Header="Tipo de Hardware" 
+                              HorizontalAlignment="Right" Style="{StaticResource MaterialDesignExpander}"
+                              Background="{x:Null}" Foreground="White">
+                        <ListView ItemsSource="{Binding Path=SubItems}"
+                                  Foreground="White" Style="{StaticResource MaterialDesignListView}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListViewItem Content="Añadir" Padding="20,5" IsEnabled="False"
+                                          x:Name="btnAnyadirTipoHW" MouseLeftButtonUp="btnAnyadirTipoHW_MouseLeftButtonUp"/>
+                            <ListViewItem Content="Ver lista (Modificar/Borrar)" Padding="20,5" IsEnabled="False"
+                                          x:Name="btnListaTipoHW" MouseLeftButtonUp="btnListaTipoHW_MouseLeftButtonUp"/>
+                        </ListView>
+                    </Expander>
+
+                </Grid>
+                <Grid>
+                    <!-- Panel Roles y Permisos -->
+                    <mat:PackIcon Kind="Crowd" Width="15" Height="15" 
+                                  Margin="10 16" Foreground="White" />
+                    <Expander IsExpanded="False" Width="210" Header="Roles y Permisos" 
+                              HorizontalAlignment="Right" Style="{StaticResource MaterialDesignExpander}"
+                              Background="{x:Null}" Foreground="White" >
+                        <ListView ItemsSource="{Binding Path=SubItems}"
+                                  Foreground="White" Style="{StaticResource MaterialDesignListView}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListViewItem Content="Editar roles y permisos" Padding="20,5" IsEnabled="False"
+                                          MouseLeftButtonUp="btnEditarRolesPermisos_MouseLeftButtonUp"
+                                          x:Name="btnEditarRolesPermisos"/>
+                        </ListView>
+                    </Expander>
+                </Grid>
+                <Grid>
+                    <!-- Panel Profesores -->
+                    <mat:PackIcon Kind="Person" Width="15" Height="15" 
+                                  Margin="10 16" Foreground="White" />
+                    <Expander IsExpanded="False" Width="210" Header="Profesor (Usuario)" 
+                              HorizontalAlignment="Right" Style="{StaticResource MaterialDesignExpander}"
+                              Background="{x:Null}" Foreground="White" >
+                        <ListView ItemsSource="{Binding Path=SubItems}"
+                                  Foreground="White" Style="{StaticResource MaterialDesignListView}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListViewItem Content="Añadir profesor" Padding="20,5" 
+                                          x:Name="BtnAddProfesor" MouseLeftButtonUp="BtnAddProfesor_MouseLeftButtonUp"
+                                          />
+                            <ListViewItem Content="Cambiar contraseña" Padding="20,5" 
+                                          x:Name="BtnCambiarPassword" MouseLeftButtonUp="BtnCambiarPassword_MouseLeftButtonUp"
+                                          />
+                            <ListViewItem Content="Lista de profesores" Padding="20,5" 
+                                          x:Name="BtnListaProf" MouseLeftButtonUp="BtnListaProf_MouseLeftButtonUp"
+                                          />
+                        </ListView>
+                    </Expander>
+                </Grid>
+                <Grid>
+                    <!-- Panel Informes incidencias -->
+                    <mat:PackIcon Kind="Clipboard" Width="15" Height="15" 
+                                  Margin="10 16" Foreground="White" />
+                    <Expander IsExpanded="False" Width="210" Header="Informes/Gráficos" 
+                              HorizontalAlignment="Right" Style="{StaticResource MaterialDesignExpander}"
+                              Background="{x:Null}" Foreground="White" >
+                        <ListView ItemsSource="{Binding Path=SubItems}"
+                                  Foreground="White" Style="{StaticResource MaterialDesignListView}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListViewItem Content="Ver informe de incidencias" Padding="20,5" 
+                                          MouseLeftButtonUp="BtnVerInformeIncidencia_MouseLeftButtonUp" 
+                                          x:Name="BtnVerInformeIncidencia" IsEnabled="False"/>
+                            <ListViewItem Content="Incidencias por departamento" Padding="20,5" 
+                                          MouseLeftButtonUp="BtnVerInformePorDpto_MouseLeftButtonUp"
+                                          x:Name="BtnVerInformePorDpto"/>
+                        </ListView>
+                    </Expander>
+                </Grid>
+                <Grid>
+                    <!-- Panel Envío correo electronico -->
+                    <mat:PackIcon Kind="Email" Width="15" Height="15" 
+                                  Margin="10 16" Foreground="White" />
+                    <Button  Width="210" Content="Enviar E-mail" x:Name="btnEnviarEmail"
+                             Click="btnEnviarEmail_Click"
+                              HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}"
+                              Background="{x:Null}" Foreground="White" >
+                    </Button>
+                </Grid>
+            </StackPanel>
+
+        </Grid >
+        <Grid x:Name="gridCentral">
+            <!--Degradado,Columnas y Filas-->
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#333333" Offset="0.7"/>
+                    <GradientStop Color="#999999" Offset="1.7"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+        </Grid>
+    </DockPanel>
+</mah:MetroWindow>

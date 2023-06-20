@@ -1,0 +1,176 @@
+﻿<UserControl x:Class="GestionIncidenciasInformaticas.Frontend.ControlesUsuario.UCListaIncidencias"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GestionIncidenciasInformaticas.Frontend.ControlesUsuario"
+             mc:Ignorable="d"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ent="clr-namespace:GestionIncidenciasInformaticas.Backend.Modelo"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--Barra de búsqueda-->
+            <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center" Background="#333333">
+                <TextBlock Text="Filtrar por fecha:" Margin="0,0,10,0"  VerticalAlignment="Center"
+                           Foreground="White" FontSize="15"/>
+                <DatePicker SelectedDate="{Binding DateFilter, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="150"
+                        x:Name="DatePickerFiltroPrimeraFecha" Margin="0,0,20,0" mat:HintAssist.Hint="Fecha inicio"
+                            Foreground="White" SelectedDateChanged="DatePickerFiltroPrimeraFecha_SelectedDateChanged"/>
+                <DatePicker SelectedDate="{Binding DateFilter, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="150"
+                        x:Name="DatePickerFiltroSegundaFecha" mat:HintAssist.Hint="Fecha límite" SelectedDateChanged="DatePickerFiltroSegundaFecha_SelectedDateChanged"
+                        Foreground="White"/>
+                <ComboBox x:Name="comboTipoHW" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                           Foreground="White" VerticalAlignment="Center" mat:HintAssist.Hint="Tipo HW"
+                          Margin="10,0,20,12" DisplayMemberPath="nombre" Height="40" Width="80"
+                          mat:HintAssist.HintOpacity="0.5" mat:HintAssist.FloatingHintHorizontalAlignment="Center"
+                          mat:HintAssist.FloatingScale="1" SelectionChanged="comboTipoHW_SelectionChanged"/>
+                <Button x:Name="btnBuscar" Foreground="White" Background="#673ab7"
+                        Click="btnBuscar_Click" Content="Buscar" IsEnabled="False"
+                        Margin="20,0,0,0"/>
+                <Button x:Name="btnResetearLista" Foreground="White" Background="#673ab7"
+                        Click="btnResetearLista_Click" Content="Borrar filtros"
+                        Margin="20,0,0,0"/>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+                <DataGrid x:Name="dgIncidencias" AutoGenerateColumns="False" CanUserAddRows="True"
+                  ColumnWidth="*" IsReadOnly="True" Grid.Row="1" HorizontalAlignment="Stretch"
+                  AlternatingRowBackground="#333333" Style="{StaticResource MahApps.Styles.DataGrid}"
+                  GridLinesVisibility="Vertical">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding num_incidencia}" Width="70"/>
+                        <DataGridTemplateColumn Header="HW/SW" Width="220">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Expander Header="{Binding tipo_incidencia}">
+                                        <Expander.Style>
+                                            <Style TargetType="Expander">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding tipo_incidencia}" Value="Software">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                        <Setter Property="Foreground" Value="#AAAAAA"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Expander.Style>
+                                        <Expander.Content>
+                                            <StackPanel>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}Número de serie: {0}">
+                                                            <Binding Path="hardware.num_serie" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}Modelo: {0}">
+                                                            <Binding Path="hardware.modelo" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}Tipo HW: {0}">
+                                                            <Binding Path="hardware.tipo_hardware.nombre" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Expander.Content>
+                                    </Expander>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Departamento" Binding="{Binding departamento.nombre_dep}" Width="140"/>
+                        <DataGridTextColumn Header="Fecha de incidencia" Binding="{Binding fecha_incidencia, StringFormat={}{0:dd/MM/yyyy}}" Width="110"/>
+                        <DataGridTemplateColumn Header="Estado" Width="220">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Expander Header="{Binding estados.desc_estado}">
+                                        <Expander.Style>
+                                            <Style TargetType="Expander">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding estados.desc_estado}" Value="Solucionada">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                        <Setter Property="Foreground" Value="#ffffff"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Expander.Style>
+                                        <Expander.Content>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}Fecha de resolución: {0:dd/MM/yyyy}">
+                                                            <Binding Path="fecha_resolución" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}Tiempo invertido: {0} horas">
+                                                            <Binding Path="tiempo_invertido" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Expander.Content>
+                                    </Expander>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Imagen" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Click="BtnDownload_Click" Margin="0,0,20,0">
+                                            <mat:PackIcon Kind="Download"/>
+                                        </Button>
+                                        <Image Width="50" Height="50"
+                                               MouseLeftButtonUp="Image_MouseLeftButtonUp"
+                                               MouseEnter="ImageControl_MouseEnter" MouseLeave="ImageControl_MouseLeave">
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Setter Property="Source" Value="{Binding info_acompanyada}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding info_acompanyada}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Editar/Eliminar" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="BtnEditar" Click="BtnEditar_Click" Margin="-5,0,5,0">
+                                            <mat:PackIcon Kind="Pencil"/>
+                                        </Button>
+                                        <Button x:Name="BtnEliminar" Click="BtnEliminar_Click" >
+                                            <mat:PackIcon Kind="Delete"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
+</UserControl>
