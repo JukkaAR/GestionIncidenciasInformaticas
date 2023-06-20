@@ -8,30 +8,32 @@ Requisitos para usar la aplicación:
 - MySQL Server 5.7.38
 
 En la raíz de los ficheros estará una BBDD prepoblada, para acceder como admin basta con poner como usuario "1234" y contraseña "1234".
-Si por curiosidad quieres saber simplemente como se ve la aplicación, a continuación habrán algunas unas capturas:
+Si por curiosidad quieres saber simplemente como se ve la aplicación, a continuación habrán capturas (no muestran toda la aplicación):
+
 Pantalla de Login
-![image](https://github.com/JukkaAR/gestion-incidencias-hw-sw/assets/84767013/5a225fe8-8259-429c-8e82-1d4623c7b3be)
+
+![image](https://github.com/JukkaAR/GestionIncidenciasInformaticas/assets/84767013/401f379d-6625-4a8a-b384-43863da3bb4a)
 
 Pantalla principal
 
-![image](https://github.com/JukkaAR/gestion-incidencias-hw-sw/assets/84767013/491322ef-adcb-4aac-b0ce-390c432aacee)
+![image](https://github.com/JukkaAR/GestionIncidenciasInformaticas/assets/84767013/86cc1d80-0f9c-49a2-8fd1-f6179b1b0e17)
 
 Añadir incidencia
 
-![image](https://github.com/JukkaAR/gestion-incidencias-hw-sw/assets/84767013/816aa59f-4c85-4031-835d-1674bd0fcfb6)
+![image](https://github.com/JukkaAR/GestionIncidenciasInformaticas/assets/84767013/e90ed6c2-8215-4d78-be29-334088b25a7e)
 
 Editar roles y permisos
 
-![image](https://github.com/JukkaAR/gestion-incidencias-hw-sw/assets/84767013/46db4e3c-f762-485f-9669-3f4ef0f31e9d)
+![image](https://github.com/JukkaAR/GestionIncidenciasInformaticas/assets/84767013/13b8a878-f675-48c6-9278-81ecaa068630)
 
 Ver informe de incidencias
 
-![image](https://github.com/JukkaAR/gestion-incidencias-hw-sw/assets/84767013/20a465ab-9f28-4485-9325-1887adedc587)
+![image](https://github.com/JukkaAR/GestionIncidenciasInformaticas/assets/84767013/ee809b79-d3ff-4cac-b7aa-34cba29f431b)
 
 Gráfico de incidencias por departamento
 
-![image](https://github.com/JukkaAR/gestion-incidencias-hw-sw/assets/84767013/b427da58-d0ff-4cd0-9f40-a1822bd7ea1e)
+![image](https://github.com/JukkaAR/GestionIncidenciasInformaticas/assets/84767013/4e57cdd7-8ea4-4fa5-bcae-62a6eaee974b)
 
 Enviar E-mail
 
-![image](https://github.com/JukkaAR/gestion-incidencias-hw-sw/assets/84767013/eb013ba1-9f41-4b8d-9e71-36ddab2e4ad4)
+![image](https://github.com/JukkaAR/GestionIncidenciasInformaticas/assets/84767013/ee259e53-9b66-4ccb-a781-d7f60509ae29)
